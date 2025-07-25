@@ -29,7 +29,6 @@ export default function DocumentList() {
     );
 
   const documents = data?.pages.flatMap((page) => page.data) || [];
-
   return (
     <div className="space-y-4">
       {documents.map((doc: SECDocument) => (
@@ -45,9 +44,15 @@ export default function DocumentList() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => toggleBookmark(doc.accessionNumber)}
+                  onClick={() =>
+                    doc?.accessionNumber
+                      ? toggleBookmark(doc.accessionNumber)
+                      : null
+                  }
                   className={
-                    isBookmarked(doc.accessionNumber) ? "text-yellow-600" : ""
+                    doc?.accessionNumber && isBookmarked(doc.accessionNumber)
+                      ? "text-yellow-600"
+                      : ""
                   }
                 >
                   <Bookmark className="w-4 h-4" />
@@ -58,10 +63,12 @@ export default function DocumentList() {
 
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground mb-4">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Filed: {formatDate(doc.filingDate)}
-              </div>
+              {doc?.filingDate && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Filed: {formatDate(doc.filingDate)}
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
                 CIK: {doc.cik}
@@ -71,7 +78,11 @@ export default function DocumentList() {
 
             <div className="flex gap-2">
               <Button
-                onClick={() => setSelectedDocument(doc.accessionNumber)}
+                onClick={() =>
+                  doc?.accessionNumber
+                    ? setSelectedDocument(doc.accessionNumber)
+                    : null
+                }
                 variant="default"
                 size="sm"
               >

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
       formType: searchParams.get("formType") || undefined,
       startDate: searchParams.get("startDate") || undefined,
       endDate: searchParams.get("endDate") || undefined,
-      companyName: searchParams.get("companyName") || undefined,
+      companyCIK: searchParams.get("companyCIK") || undefined,
       offset: parseInt(searchParams.get("offset") || "0"),
       limit: parseInt(searchParams.get("limit") || "50"),
     };

@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Enhanced Regulatory Document Explorer
 
-## Getting Started
+A Next.js application that provides AI-powered analysis of SEC regulatory filings using Google's Gemini AI.
 
-First, run the development server:
+## Features
+
+- **Document Discovery**: Browse SEC EDGAR filings with filtering capabilities
+- **AI Analysis**: Detailed compliance analysis using Gemini AI
+- **Smart Bookmarking**: Save important documents with localStorage persistence
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Tech Stack
+
+### Core Framework & Language
+- **Next.js 15**: Latest features with built-in optimization and excellent developer experience
+- **React**: Component-based UI library
+- **TypeScript**: Type-safe development
+
+### Styling & UI
+- **Tailwind CSS**: Utility-first CSS framework
+- **Shadcn/UI**: Accessible and customizable component library
+- **Radix UI**: Headless UI primitives
+
+### State & Data Management
+- **React Query**: Server state management with superior caching and error handling
+- **Zustand**: Lightweight client state management (lighter alternative to Redux)
+
+### External Services
+- **Google Gemini Pro**: AI integration for document analysis (more cost-effective option)
+- **SEC EDGAR API**:
+
+## Quick Start
+
+### 1. Clone and Install
+
+```bash
+git clone ai-regulatory-doc-explorer
+cd ai-regulatory-doc-explorer
+npm install
+```
+
+### 2. Environment Setup
+
+```bash
+cp .env.example .env.local
+# Add your Gemini API key to .env.local
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture Decisions
 
-## Learn More
+### State Management Strategy
 
-To learn more about Next.js, take a look at the following resources:
+- **React Query**: Server state management, caching, and error handling for API calls
+- **Zustand**: Client state (bookmarks, UI state, filters)
+- **localStorage**: Persists bookmarks across sessions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### API Integration Strategy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **SEC EDGAR**: Primary data source for regulatory documents
+- **Rate Limiting**: Implements SEC's required 10 requests per second limit
+- **Error Handling**: Comprehensive error boundaries and fallback states
 
-## Deploy on Vercel
+### AI Integration Strategy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Gemini Pro**: Chosen for cost-effectiveness and document analysis capabilities
+- **Request Optimization**: Truncates documents to 30K characters to fit context window
+- **Caching**: 30-minute cache for expensive AI analysis results ($1.25 per million input tokens)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Deployment
+
+### Environment Variables
+
+```bash
+# Required
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### Production Build
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+

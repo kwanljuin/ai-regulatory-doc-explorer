@@ -19,8 +19,9 @@ export default function DocumentAnalysis() {
     isLoading,
     error,
   } = useDocumentAnalysis(
-    selectedDocument || "",
-    "SEC" // We'll enhance this to pass actual form type
+    selectedDocument?.cik || "",
+    selectedDocument?.accessionNumber || "",
+    selectedDocument?.formType || ""
   );
 
   if (!selectedDocument) return null;

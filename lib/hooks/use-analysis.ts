@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DocumentAnalysis } from "@/types";
 
 export const useDocumentAnalysis = (
+  cik: string,
   accessionNumber: string,
   formType: string
 ) => {
@@ -11,7 +12,7 @@ export const useDocumentAnalysis = (
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accessionNumber, formType }),
+        body: JSON.stringify({ cik, accessionNumber, formType }),
       });
 
       if (!response.ok) {

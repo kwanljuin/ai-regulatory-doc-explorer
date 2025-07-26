@@ -29,6 +29,7 @@ export default function DocumentList() {
     );
 
   const documents = data?.pages.flatMap((page) => page.data) || [];
+
   return (
     <div className="space-y-4">
       {documents.map((doc: SECDocument) => (
@@ -60,7 +61,6 @@ export default function DocumentList() {
               </div>
             </div>
           </CardHeader>
-
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground mb-4">
               {doc?.filingDate && (
@@ -78,11 +78,7 @@ export default function DocumentList() {
 
             <div className="flex gap-2">
               <Button
-                onClick={() =>
-                  doc?.accessionNumber
-                    ? setSelectedDocument(doc.accessionNumber)
-                    : null
-                }
+                onClick={() => (doc ? setSelectedDocument(doc) : null)}
                 variant="default"
                 size="sm"
               >

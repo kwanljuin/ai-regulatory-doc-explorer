@@ -56,16 +56,15 @@ export class SECEdgarClient {
     }
   }
 
-  async getDocumentContent(accessionNumber: string): Promise<string> {
+  async getDocumentContent(
+    cik: string,
+    accessionNumber: string
+  ): Promise<string> {
     await this.delay(100);
 
     try {
-      // Extract CIK from accession number (first 10 digits, remove leading zeros)
-      const cik = accessionNumber.substring(0, 10).replace(/^0+/, "");
-
       // Format accession number for URL (remove dashes)
       const formattedAccession = accessionNumber.replace(/-/g, "");
-
       const url = `${SEC_BASE_URL}/data/${cik}/${formattedAccession}/${accessionNumber}.txt`;
 
       const response = await fetch(url, {

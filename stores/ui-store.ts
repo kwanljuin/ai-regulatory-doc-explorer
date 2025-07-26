@@ -1,13 +1,13 @@
 import { create } from "zustand";
-import { DocumentFilters } from "@/types";
+import { DocumentFilters, SECDocument } from "@/types";
 import { MAJOR_COMPANIES } from "@/lib/constants/companies";
 
 interface UIStore {
   filters: DocumentFilters;
-  selectedDocument: string | null;
+  selectedDocument: SECDocument | null;
   isAnalyzing: boolean;
   setFilters: (filters: Partial<DocumentFilters>) => void;
-  setSelectedDocument: (id: string | null) => void;
+  setSelectedDocument: (data: SECDocument | null) => void;
   setIsAnalyzing: (analyzing: boolean) => void;
 }
 
@@ -25,6 +25,6 @@ export const useUIStore = create<UIStore>((set) => ({
     set((state) => ({
       filters: { ...state.filters, ...newFilters, offset: 0 },
     })),
-  setSelectedDocument: (id) => set({ selectedDocument: id }),
+  setSelectedDocument: (data) => set({ selectedDocument: data }),
   setIsAnalyzing: (analyzing) => set({ isAnalyzing: analyzing }),
 }));

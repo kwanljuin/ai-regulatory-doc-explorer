@@ -4,17 +4,22 @@ import { secEdgarClient } from "@/lib/sec-edgar/client";
 
 export async function POST(request: NextRequest) {
   try {
-    const { accessionNumber, formType } = await request.json();
+    const { cik, accessionNumber, formType } = await request.json();
 
     if (!accessionNumber) {
       return NextResponse.json(
-        { error: "Accession number is required" },
+        { error: "Accession number not found" },
         { status: 400 }
       );
     }
 
+    if (!cik) {
+      return NextResponse.json({ error: "CIK not found" }, { status: 400 });
+    }
+
     // Fetch document content
     const documentContent = await secEdgarClient.getDocumentContent(
+      cik,
       accessionNumber
     );
 

@@ -5,7 +5,13 @@ import { useBookmarkStore } from "@/stores/bookmark-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bookmark, ExternalLink, Calendar, Building2 } from "lucide-react";
+import {
+  ExternalLink,
+  Calendar,
+  Building2,
+  BookmarkPlus,
+  BookmarkCheck,
+} from "lucide-react";
 import { formatDate, formatFileSize } from "@/lib/utils";
 import { SECDocument } from "@/types";
 
@@ -93,7 +99,11 @@ export const DocumentCard = ({ doc }: { doc: SECDocument }) => {
                   : ""
               }
             >
-              <Bookmark className="w-4 h-4" />
+              {doc?.accessionNumber && isBookmarked(doc.accessionNumber) ? (
+                <BookmarkCheck className="w-4 h-4" />
+              ) : (
+                <BookmarkPlus className="w-4 h-4" />
+              )}
             </Button>
           </div>
         </div>

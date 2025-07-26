@@ -1,11 +1,12 @@
+import { SECDocument } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface BookmarkStore {
-  bookmarks: string[];
-  toggleBookmark: (documentId: string) => void;
+  bookmarks: SECDocument[];
+  toggleBookmark: (data: SECDocument) => void;
   isBookmarked: (documentId: string) => boolean;
-  getBookmarks: () => string[];
+  getBookmarks: () => SECDocument[];
   _hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
 }
@@ -20,22 +21,26 @@ export const useBookmarkStore = create<BookmarkStore>()(
           _hasHydrated: state,
         });
       },
-      toggleBookmark: (documentId: string) => {
+      toggleBookmark: (data: SECDocument) => {
         set((state) => {
-          const isCurrentlyBookmarked = state.bookmarks.includes(documentId);
+          const isCurrentlyBookmarked = state.bookmarks.some(
+            (doc) => doc.accessionNumber === data.accessionNumber
+          );
           if (isCurrentlyBookmarked) {
             return {
-              bookmarks: state.bookmarks.filter((id) => id !== documentId),
+              bookmarks: state.bookmarks.filter(
+                (doc) => doc.accessionNumber !== data.accessionNumber
+              ),
             };
           } else {
             return {
-              bookmarks: [...state.bookmarks, documentId],
+              bookmarks: [...state.bookmarks, data],
             };
           }
         });
       },
       isBookmarked: (documentId: string) =>
-        get().bookmarks.includes(documentId),
+        get().bookmarks.some((doc) => doc.accessionNumber === documentId),
       getBookmarks: () => get().bookmarks,
     }),
     {

@@ -2,7 +2,6 @@
 import { useDocumentAnalysis } from "@/lib/hooks/use-analysis";
 import { useUIStore } from "@/stores/ui-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -10,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AlertTriangle, CheckCircle, Calendar, X, Loader2 } from "lucide-react";
+import { AlertTriangle, CheckCircle, Calendar, Loader2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 export default function DocumentAnalysis() {
@@ -35,13 +34,6 @@ export default function DocumentAnalysis() {
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             Document Analysis
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSelectedDocument(null)}
-            >
-              <X className="w-4 h-4" />
-            </Button>
           </DialogTitle>
         </DialogHeader>
 

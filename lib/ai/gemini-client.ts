@@ -4,7 +4,7 @@ import { DocumentAnalysis } from "@/types";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export class GeminiAnalyzer {
-  private model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  private model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
   async analyzeDocument(
     documentContent: string,

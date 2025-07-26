@@ -28,7 +28,6 @@ export class SECEdgarClient {
 
     try {
       // Use the SEC's submissions endpoint to get recent filings
-      // This gets the most recent filings across all companies
       const url = `${SEC_API_BASE}/submissions/CIK${filters.companyCIK}.json`;
 
       const response = await fetch(url, {
@@ -48,7 +47,8 @@ export class SECEdgarClient {
       return {
         data: documents,
         total: documents.length,
-        hasMore: false, // For simplicity in this demo
+        hasMore:
+          documents.length > (filters.offset || 0) + (filters.limit || 50),
       };
     } catch (error) {
       console.error("SEC API Error:", error);
@@ -60,11 +60,13 @@ export class SECEdgarClient {
     await this.delay(100);
 
     try {
+      // Extract CIK from accession number (first 10 digits, remove leading zeros)
+      const cik = accessionNumber.substring(0, 10).replace(/^0+/, "");
+
       // Format accession number for URL (remove dashes)
       const formattedAccession = accessionNumber.replace(/-/g, "");
 
-      // Try to get the primary document
-      const url = `${SEC_BASE_URL}/data/${formattedAccession}/${accessionNumber}.txt`;
+      const url = `${SEC_BASE_URL}/data/${cik}/${formattedAccession}/${accessionNumber}.txt`;
 
       const response = await fetch(url, {
         headers: {

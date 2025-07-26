@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { DocumentFilters } from "@/types";
+import { MAJOR_COMPANIES } from "@/lib/constants/companies";
 
 interface UIStore {
   filters: DocumentFilters;
@@ -10,10 +11,13 @@ interface UIStore {
   setIsAnalyzing: (analyzing: boolean) => void;
 }
 
+const defaultCompany = MAJOR_COMPANIES[0];
+
 export const useUIStore = create<UIStore>((set) => ({
   filters: {
     limit: 50,
     offset: 0,
+    companyCIK: defaultCompany.cik,
   },
   selectedDocument: null,
   isAnalyzing: false,

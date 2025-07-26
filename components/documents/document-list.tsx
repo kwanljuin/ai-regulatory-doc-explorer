@@ -19,8 +19,6 @@ export default function DocumentList() {
     hasNextPage,
     isFetchingNextPage,
   } = useDocuments(filters);
-  const { toggleBookmark, isBookmarked } = useBookmarkStore();
-  const { setSelectedDocument } = useUIStore();
 
   if (isLoading) return <DocumentListSkeleton />;
   if (error)
@@ -33,71 +31,7 @@ export default function DocumentList() {
   return (
     <div className="space-y-4">
       {documents.map((doc: SECDocument) => (
-        <Card
-          key={doc.accessionNumber}
-          className="hover:shadow-md transition-shadow"
-        >
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">{doc.companyName}</CardTitle>
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary">{doc.formType}</Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() =>
-                    doc?.accessionNumber
-                      ? toggleBookmark(doc.accessionNumber)
-                      : null
-                  }
-                  className={
-                    doc?.accessionNumber && isBookmarked(doc.accessionNumber)
-                      ? "text-yellow-600"
-                      : ""
-                  }
-                >
-                  <Bookmark className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground mb-4">
-              {doc?.filingDate && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  Filed: {formatDate(doc.filingDate)}
-                </div>
-              )}
-              <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4" />
-                CIK: {doc.cik}
-              </div>
-              <div>Size: {formatFileSize(doc.size)}</div>
-            </div>
-
-            <div className="flex gap-2">
-              <Button
-                onClick={() => (doc ? setSelectedDocument(doc) : null)}
-                variant="default"
-                size="sm"
-              >
-                Analyze Document
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <a
-                  href={doc.documentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  View Original
-                </a>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <DocumentCard key={doc.accessionNumber} doc={doc} />
       ))}
 
       {hasNextPage && (
@@ -132,3 +66,74 @@ const DocumentListSkeleton = () => (
     ))}
   </div>
 );
+
+export const DocumentCard = ({ doc }: { doc: SECDocument }) => {
+  const { toggleBookmark, isBookmarked } = useBookmarkStore();
+  const { setSelectedDocument } = useUIStore();
+
+  return (
+    <Card
+      key={doc.accessionNumber}
+      className="hover:shadow-md transition-shadow"
+    >
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">{doc.companyName}</CardTitle>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">{doc.formType}</Badge>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                doc?.accessionNumber ? toggleBookmark(doc) : null
+              }
+              className={
+                doc?.accessionNumber && isBookmarked(doc.accessionNumber)
+                  ? "text-yellow-600"
+                  : ""
+              }
+            >
+              <Bookmark className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground mb-4">
+          {doc?.filingDate && (
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              Filed: {formatDate(doc.filingDate)}
+            </div>
+          )}
+          <div className="flex items-center gap-2">
+            <Building2 className="w-4 h-4" />
+            CIK: {doc.cik}
+          </div>
+          <div>Size: {formatFileSize(doc.size)}</div>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            onClick={() => (doc ? setSelectedDocument(doc) : null)}
+            variant="default"
+            size="sm"
+          >
+            Analyze Document
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <a
+              href={doc.documentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <ExternalLink className="w-4 h-4" />
+              View Original
+            </a>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
